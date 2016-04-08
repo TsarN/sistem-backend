@@ -1,0 +1,22 @@
+       (Summer) Informatics School managing sysTEM                  
+
+ To compile system one will need:
+  - Patched Linux kernel (see ejudge.ru for sandbox patches)
+  - C compiler
+  - GNU C++ compiler (for several tests)
+  - Free Pascal compiler (for unJudge17.pas)
+  - GNU Make
+
+ How to compile backend:
+  - Go to "backend" directory
+  - Compile system by typing "make"
+  - Run tests by typing "make check"
+
+ What to do if some tests don't pass:
+  - Make sure that you are running on patched Linux kernel
+  - (For *.cpp tests): make sure that /usr/lib/libc.so.6 and
+    /usr/lib/libm.so.6 exist. If they don't symlink them
+    with /lib/libc.so.6 and /lib/libm.so.6
+    This is known issue with Linux ejudge patch
+  - Go create a new issue on GitHub
+

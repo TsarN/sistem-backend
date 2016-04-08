@@ -1,0 +1,119 @@
+/*
+ * Copyright (c) 2016 Tsarev Nikita
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
+
+#ifndef CHECKER_H
+#define CHECKER_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <stdbool.h>
+
+const int CR_OK = 0;   /* OK */
+const int CR_PE = 1;   /* Presentation Error */
+const int CR_WA = 2;   /* Wrong Answer */
+const int CR_IT = 3;   /* Invalid Test */
+const int CR_IE = 127; /* Internal Error*/
+
+const int ERR_UNEXPECTED_EOF = 1;
+const int ERR_OUT_OF_BOUNDS = 2;
+const int ERR_INVALID_FORMAT = 3;
+const int ERR_EOF_EXPECTED = 4;
+const int ERR_EOLN_EXPECTED = 5;
+
+const char *ERR_NAMES[] = {
+    "OK",
+    "ERR_UNEXPECTED_EOF",
+    "ERR_OUT_OF_BOUNDS",
+    "ERR_INVALID_FORMAT",
+    "ERR_EOF_EXPECTED",
+    "ERR_EOLN_EXPECTED"
+};
+
+const char LF = (char)10;
+const char CR = (char)13;
+const char TAB = (char)9;
+const char SPACE = (char)' ';
+
+/* str_stream */
+
+struct str_stream_t
+{
+    char *str;
+    int pos;
+    int last_err;
+    bool fatal;
+};
+typedef struct str_stream_t str_stream;
+str_stream new_str_stream(char *str);
+str_stream new_str_stream_file(char *filename);
+
+/* global str_stream objects */
+str_stream f_input, f_output, f_pattern;
+void checker_init_impl(int argc, char **argv, char *description);
+#define checker_init(msg) checker_init_impl(argc, argv, msg)
+#define checker_main() main(int argc, char *argv[])
+
+/* Reading integers */
+long long read_integer_in_bounds(str_stream *stream, long long min_bound, long long max_bound);
+
+int read_int(str_stream *stream);
+long read_long(str_stream *stream);
+long long read_long_long(str_stream *stream);
+
+
+unsigned long long read_unsigned_integer_in_bounds(str_stream *stream, unsigned long long min_bound, unsigned long long max_bound);
+
+unsigned int read_unsigned_int(str_stream *stream);
+unsigned long read_unsigned_long(str_stream *stream);
+unsigned long long read_unsigned_long_long(str_stream *stream);
+
+char *read_big_integer(str_stream *stream);
+
+/* Reading characters */
+char read_character(str_stream *stream);
+
+/* Reading floating-point */
+float read_float(str_stream *stream);
+double read_double(str_stream *stream);
+long double read_long_double(str_stream *stream);
+
+/* Reading strings */
+char *read_string(str_stream *stream);
+
+/* Utility */
+bool is_eof(char c);
+bool is_eof_stream(str_stream *stream);
+bool is_eoln(char c);
+bool is_eoln_stream(str_stream *stream);
+bool is_blank(char c);
+bool is_blank_stream(str_stream *stream);
+void seek_visible(str_stream *stream);
+void seek_eoln(str_stream *stream);
+void str_stream_error(str_stream *stream, int err);
+void expect_eof(str_stream *stream);
+void expect_eoln(str_stream *stream);
+
+#endif // CHECKER_H
