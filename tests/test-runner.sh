@@ -3,8 +3,8 @@ if [[ -z $1 ]]; then
     echo "Usage: $0 <test>"
     exit 1
 fi
-RUNSBOX=$(if uname | grep -i 'cygwin' > /dev/null; then echo './runsbox.exe'; else echo './runsbox'; fi)
-TESTEXE=$(if uname | grep -i 'cygwin' > /dev/null; then echo 'test.exe'; else echo 'test'; fi)
+RUNSBOX=$(if uname | grep 'NT' > /dev/null; then echo './runsbox.exe'; else echo './runsbox'; fi)
+TESTEXE=$(if uname | grep 'NT' > /dev/null; then echo 'test.exe'; else echo 'test'; fi)
 pushd . > /dev/null
 cd `dirname $0`
 curpath=`pwd -P`

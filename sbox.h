@@ -77,11 +77,6 @@ struct exec_result_t
 
 typedef struct exec_result_t exec_result;
 
-void set_process_flag(int flag);
-void set_memory_limit(int kb);
-void set_cpu_limit(int ms);
-void set_security(void);
-
-exec_result run_limited_process(char *exe, char *input, int timeLimit, int memoryLimit);
+extern exec_result run_limited_process(char *exe, char *input, int timeLimit, int memoryLimit);
 
 #endif

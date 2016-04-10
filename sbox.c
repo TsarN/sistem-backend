@@ -262,7 +262,6 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
     {
         DWORD written;
         BOOL fSuccess;
-        /* Write terminating zero to make EOF */
         size_t input_length = strlen(input);
         fSuccess = WriteFile(hChildStdinWr, input, input_length + 1, &written, NULL);
         CloseHandle(hChildStdoutWr);
@@ -302,7 +301,6 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
                 shutdownProcess(&pi, hChildStdinRd, hChildStdinWr, hChildStdoutRd, hChildStdoutWr);
                 result.flags |= ER_RE;
             }
-            
             size_t wsize = 1;
             fprintf(stderr, "Copying program's stdout\n");
 

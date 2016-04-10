@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     int memory_limit = atoi(argv[3]);
     char *file_in_name = argv[4];
     char *file_out_name = NULL;
-    if (argc >= 5)
+    if (argc >= 6)
         file_out_name = argv[5];
 
     FILE *file_in = fopen(file_in_name, "rb");
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     size_t file_in_length = ftell(file_in);
     fseek(file_in, 0, SEEK_SET);
 
-    char *input = malloc(file_in_length);
+    char *input = malloc(file_in_length + 1);
     if (!input)
     {
         perror("Failed to allocate memory");
@@ -62,6 +62,8 @@ int main(int argc, char *argv[])
 
     fread(input, 1, file_in_length, file_in);
     fclose(file_in);
+
+    input[file_in_length] = '\0';
 
     /* Run process */
     exec_result result = run_limited_process(program, input, time_limit, memory_limit);
