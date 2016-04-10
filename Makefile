@@ -1,5 +1,6 @@
-CFLAGS := -g -Wall -Werror -I.
+CFLAGS := -g -Wall -Werror -I. 
 CXXFLAGS := $(CFLAGS)
+LDFLAGS := -lm
 PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
 BINDIR := $(PREFIX)/bin
@@ -67,7 +68,7 @@ $(LIBCHECKER_STATIC): $(OBJS_LIBCHECKER)
 
 $(TARGET_RUNSBOX): $(LIBSBOX_SHARED) $(OBJS_RUNSBOX)
 	@ echo "   LD   $@"
-	@ $(CC) $(CFLAGS) -L. -lsbox $(OBJS_RUNSBOX) -o $(TARGET_RUNSBOX)
+	@ $(CC) $(CFLAGS) -L. -lsbox $(LDFLAGS) $(OBJS_RUNSBOX) -o $(TARGET_RUNSBOX)
 
 %.c.o: %.c
 	@ echo "   CC   $@"
@@ -79,19 +80,19 @@ $(TARGET_RUNSBOX): $(LIBSBOX_SHARED) $(OBJS_RUNSBOX)
 
 $(TARGET_TESTS_C): % : %.c.o
 	@ echo "   LD   $@"
-	@ $(CC) $(CFLAGS) $@.c.o -o $@
+	@ $(CC) $(CFLAGS) $(LDFLAGS) $@.c.o -o $@
 
 $(TARGET_TESTS_CXX): % : %.cpp.o
 	@ echo "   LD   $@"
-	@ $(CXX) $(CXXFLAGS) $@.cpp.o -o $@
+	@ $(CXX) $(CXXFLAGS) $(LDFLAGS) $@.cpp.o -o $@
 
 $(TARGET_CHECKERS_C): % : %.c.o $(LIBCHECKER_SHARED) 
 	@ echo "   LD   $@"
-	@ $(CC) $(CFLAGS) -L. -lchecker $@.c.o -o $@
+	@ $(CC) $(CFLAGS) -L. -lchecker $(LDFLAGS) $@.c.o -o $@
 
 $(TARGET_CHECKERS_CXX): % : %.cpp.o $(LIBCHECKER_SHARED) 
 	@ echo "   LD   $@"
-	@ $(CXX) $(CXXFLAGS) -L. -lchecker $@.cpp.o -o $@
+	@ $(CXX) $(CXXFLAGS) -L. -lchecker $(LDFLAGS) $@.cpp.o -o $@
 
 install: 
 	@ for bin in $(INSTALL_BIN); do echo "  BIN   $$bin" && install -m755 -D $$bin $(DESTDIR)$(BINDIR)/$$bin; done
