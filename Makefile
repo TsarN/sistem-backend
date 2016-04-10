@@ -67,7 +67,7 @@ $(LIBCHECKER_STATIC): $(OBJS_LIBCHECKER)
 	@ $(AR) rcs $@ $<
 
 $(TARGET_RUNSBOX): $(LIBSBOX_SHARED) $(OBJS_RUNSBOX)
-	@ echo "   LD   $@"
+	@ echo "  CCLD  $@"
 	@ $(CC) $(CFLAGS) -L. -lsbox $(LDFLAGS) $(OBJS_RUNSBOX) -o $(TARGET_RUNSBOX)
 
 %.c.o: %.c
@@ -79,19 +79,19 @@ $(TARGET_RUNSBOX): $(LIBSBOX_SHARED) $(OBJS_RUNSBOX)
 	@ $(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(TARGET_TESTS_C): % : %.c.o
-	@ echo "   LD   $@"
+	@ echo "  CCLD  $@"
 	@ $(CC) $(CFLAGS) $(LDFLAGS) $@.c.o -o $@
 
 $(TARGET_TESTS_CXX): % : %.cpp.o
-	@ echo "   LD   $@"
+	@ echo "  CXXLD $@"
 	@ $(CXX) $(CXXFLAGS) $(LDFLAGS) $@.cpp.o -o $@
 
 $(TARGET_CHECKERS_C): % : %.c.o $(LIBCHECKER_SHARED) 
-	@ echo "   LD   $@"
+	@ echo "  CCLD  $@"
 	@ $(CC) $(CFLAGS) -L. -lchecker $(LDFLAGS) $@.c.o -o $@
 
 $(TARGET_CHECKERS_CXX): % : %.cpp.o $(LIBCHECKER_SHARED) 
-	@ echo "   LD   $@"
+	@ echo "  CXXLD $@"
 	@ $(CXX) $(CXXFLAGS) -L. -lchecker $(LDFLAGS) $@.cpp.o -o $@
 
 install: 

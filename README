@@ -1,18 +1,32 @@
        (Summer) Informatics School managing sysTEM                  
 
  To compile system one will need:
-  - Patched Linux kernel (see ejudge.ru for sandbox patches)
+  - (Linux users) Patched Linux kernel (see ejudge.ru for sandbox patches)
+  - (Windows users) CygWin enviroment
   - C compiler
-  - GNU C++ compiler (for several tests)
-  - Free Pascal compiler (for unJudge17.pas)
+  - C++ compiler (for several tests)
   - GNU Make
 
  How to compile backend:
-  - Go to "backend" directory
   - Compile system by typing "make"
   - Run tests by typing "make check"
 
  What to do if some tests don't pass:
-  - Make sure that you are running on patched Linux kernel
+  - (Linux users) Make sure that you are running on patched Linux kernel
   - Go create a new issue on GitHub
 
+ +------------------------+------------+
+ |        PLATFORM        |   STATUS   |
+ +------------------------+------------+
+ | Linux    4.4.6 x86     | Build OK   |
+ | GCC      5.3.0         | Tests OK   |
+ | GLibc    2.23          |            |
+ +------------------------+------------+
+ | Linux    4.4.6 x86     | Build OK   |
+ | CLang    3.8.0         | Tests OK   |
+ | GLibc    2.23          |            |
+ +------------------------+------------+
+ | Windows XP x86         | Build TBD  |
+ | GCC   5.3.0            | Tests TBD  |
+ | CygWin Enviroment      |            |
+ +------------------------+------------+

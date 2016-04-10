@@ -24,8 +24,12 @@
 #ifndef LIBEXEC_H
 #define LIBEXEC_H
 
-#define _GNU_SOURCE
 
+#ifdef _WIN32
+#include <windows.h>
+#include <Psapi.h>
+#else
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -37,6 +41,7 @@
 #include <sys/ptrace.h>
 #include <sys/resource.h>
 #include <asm-generic/resource.h>
+#endif
 
 #ifndef max
     #define max(a,b) ((a) > (b) ? (a) : (b))
