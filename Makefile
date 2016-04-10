@@ -51,7 +51,7 @@ tests: $(TARGET_TESTS)
 checkers: $(TARGET_CHECKERS)
 
 $(LIBSBOX_SHARED): $(OBJS_LIBSBOX)
-	@ echo "   СС   $@"
+	@ echo "   CC   $@"
 	@ $(CC) $(CFLAGS) -shared -o $@ $<
 
 $(LIBSBOX_STATIC): $(OBJS_LIBSBOX)
@@ -59,7 +59,7 @@ $(LIBSBOX_STATIC): $(OBJS_LIBSBOX)
 	@ $(AR) rcs $@ $<
 
 $(LIBCHECKER_SHARED): $(OBJS_LIBCHECKER)
-	@ echo "   СС   $@"
+	@ echo "   CC   $@"
 	@ $(CC) $(CFLAGS) -shared -o $@ $<
 
 $(LIBCHECKER_STATIC): $(OBJS_LIBCHECKER)
