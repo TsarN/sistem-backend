@@ -31,6 +31,12 @@
 #include <limits.h>
 #include <stdbool.h>
 
+#ifndef max
+    #define max(a, b) (((a) > (b))?(a):(b))
+#endif
+
+#define checker_main() main(int argc, char *argv[])
+
 const int CR_OK = 0;   /* OK */
 const int CR_PE = 1;   /* Presentation Error */
 const int CR_WA = 2;   /* Wrong Answer */
@@ -74,7 +80,6 @@ str_stream new_str_stream_file(char *filename);
 str_stream f_input, f_output, f_pattern;
 void checker_init_impl(int argc, char **argv, char *description);
 #define checker_init(msg) checker_init_impl(argc, argv, msg)
-#define checker_main() main(int argc, char *argv[])
 
 /* Reading integers */
 long long read_integer_in_bounds(str_stream *stream, long long min_bound, long long max_bound);
@@ -115,5 +120,33 @@ void seek_eoln(str_stream *stream);
 void str_stream_error(str_stream *stream, int err);
 void expect_eof(str_stream *stream);
 void expect_eoln(str_stream *stream);
+
+
+/* Generators */
+void generator_init_impl(int argc, char **argv, char *checker_string);
+#define generator_init(checker_string) generator_init_impl(argc, argv, checker_string)
+
+/* Randomness: xorshift* */
+
+unsigned long long rnd_seed = 293432936541724496LL;
+
+unsigned long long ask_rand();
+unsigned long long ask_rand_in_bounds(unsigned long long lower, unsigned long long higher);
+long long ask_weighted_rand_in_bounds(long long lower, long long higher, int weight);
+double ask_rand_double();
+
+void randomize(int x);
+
+char* ask_rand_pattern(char *pattern);
+/*
+ * pattern examples:
+ * [A-Z] - one any uppercase English letter
+ * [A-Z]{5} - five any uppercase English letters
+ * [A-Z]{1,100} - from 1 to 100 any uppercase English letters
+ * [0-9a-f]{16} - random 256 bit hex number
+ * (<pattern>){2} - repeat <pattern> 2 times
+ * |a|b - empty string, 'a' or 'b'
+ *
+ * */
 
 #endif // CHECKER_H

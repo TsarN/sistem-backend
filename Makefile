@@ -1,4 +1,4 @@
-CFLAGS := -O2 -Wall -Werror -I.
+CFLAGS := -g -Wall -Werror -I.
 CXXFLAGS := $(CFLAGS)
 PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
