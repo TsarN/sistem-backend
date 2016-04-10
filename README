@@ -13,6 +13,7 @@
 
  What to do if some tests don't pass:
   - (Linux users) Make sure that you are running on patched Linux kernel
+  - (Windows users) I'll fix Windows sandboxing soon (probably). Be patient.
   - Go create a new issue on GitHub
 
  +------------------------+------------+
