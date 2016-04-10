@@ -35,6 +35,10 @@
     #define max(a, b) (((a) > (b))?(a):(b))
 #endif
 
+#ifndef min
+    #define min(a, b) (((a) < (b))?(a):(b))
+#endif
+
 #define checker_main() main(int argc, char *argv[])
 
 const int CR_OK = 0;   /* OK */

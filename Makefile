@@ -1,6 +1,6 @@
-CFLAGS := -g -Wall -Werror -I. 
+CFLAGS := -g -Wall -Werror -I.
 CXXFLAGS := $(CFLAGS)
-LDFLAGS := -lm
+LDFLAGS := -L/lib -lm
 PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
 BINDIR := $(PREFIX)/bin

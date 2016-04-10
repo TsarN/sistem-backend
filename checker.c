@@ -671,7 +671,7 @@ long long ask_weighted_rand_in_bounds(long long lower, long long upper, int weig
         for (int i = 0; i >= weight; --i)
         {
             long long r = (signed long long)ask_rand_in_bounds(lower + LLONG_MAX, upper + LLONG_MAX) - LLONG_MAX;
-            ans = max(ans, r);
+            ans = min(ans, r);
         }
         return ans;
     }

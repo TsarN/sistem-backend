@@ -14,10 +14,5 @@
 
  What to do if some tests don't pass:
   - Make sure that you are running on patched Linux kernel
-  - (For *.cpp tests): use CLang or make sure that
-    /usr/lib/libc.so.6 and /usr/lib/libm.so.6 exist.
-    If they don't symlink, them
-    with /lib/libc.so.6 and /lib/libm.so.6
-    This is known issue with GCC
   - Go create a new issue on GitHub
 
