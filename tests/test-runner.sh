@@ -3,11 +3,13 @@ if [[ -z $1 ]]; then
     echo "Usage: $0 <test>"
     exit 1
 fi
+RUNSBOX=$(if uname | grep -i 'cygwin' > /dev/null; then echo './runsbox.exe'; else echo './runsbox'; fi)
+TESTEXE=$(if uname | grep -i 'cygwin' > /dev/null; then echo 'test.exe'; else echo 'test'; fi)
 pushd . > /dev/null
 cd `dirname $0`
 curpath=`pwd -P`
 cd ..
-./runsbox "$curpath/$1/test" 1000 65536 /dev/null "$curpath/$1/given_output" 2>/dev/null
+${RUNSBOX} "$curpath/$1/$TESTEXE" 1000 65536 /dev/null "$curpath/$1/given_output" 2>/dev/null
 echo $? > "$curpath/$1/given_exitcode"
 cd "$curpath"
 

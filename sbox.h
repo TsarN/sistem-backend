@@ -24,16 +24,20 @@
 #ifndef LIBEXEC_H
 #define LIBEXEC_H
 
-
-#ifdef _WIN32
-#include <windows.h>
-#include <Psapi.h>
-#else
 #define _GNU_SOURCE
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdbool.h>
+
+#ifndef __linux__
+/* Cygwin */
+#include <windows.h>
+#include <Psapi.h>
+#else
+/* Linux */
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>

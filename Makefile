@@ -1,23 +1,28 @@
+SBOX_LDFLAGS := $(shell uname | grep -i 'cygwin' > /dev/null && echo '-lpsapi')
+CHECKER_LDFLAGS := $(shell if uname | grep -i 'cygwin' > /dev/null; then echo '-llibchecker'; else echo '-lchecker'; fi)
+RUNSBOX_LDFLAGS := $(shell if uname | grep -i 'cygwin' > /dev/null; then echo '-llibsbox'; else echo '-lsbox'; fi)
+SHARED_LIB_SUFFIX := $(shell if uname | grep -i 'cygwin' > /dev/null; then echo '.dll'; else echo '.so'; fi)
+EXECUTABLE_SUFFIX := $(shell uname | grep -i 'cygwin' > /dev/null && echo '.exe')
 CFLAGS := -g -Wall -Werror -I.
 CXXFLAGS := $(CFLAGS)
-LDFLAGS := -L/lib -lm
+LDFLAGS := -lm
 PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
 BINDIR := $(PREFIX)/bin
 INCLUDEDIR := $(PREFIX)/include
 
 OBJS_RUNSBOX := runsbox.c.o
-TARGET_RUNSBOX := runsbox
+TARGET_RUNSBOX := runsbox$(EXECUTABLE_SUFFIX)
 
 TARGET_LIBSBOX := libsbox
 OBJS_LIBSBOX := sbox.c.o
-LIBSBOX_SHARED := $(TARGET_LIBSBOX).so
+LIBSBOX_SHARED := $(TARGET_LIBSBOX)$(SHARED_LIB_SUFFIX)
 LIBSBOX_STATIC := $(TARGET_LIBSBOX).a
 TARGET_LIBSBOX_ALL := $(LIBSBOX_SHARED) $(LIBSBOX_STATIC)
 
 TARGET_LIBCHECKER := libchecker
 OBJS_LIBCHECKER := checker.c.o
-LIBCHECKER_SHARED := $(TARGET_LIBCHECKER).so
+LIBCHECKER_SHARED := $(TARGET_LIBCHECKER)$(SHARED_LIB_SUFFIX)
 LIBCHECKER_STATIC := $(TARGET_LIBCHECKER).a
 TARGET_LIBCHECKER_ALL := $(LIBCHECKER_SHARED) $(LIBCHECKER_STATIC)
 
@@ -29,18 +34,18 @@ TESTS := $(shell ls -d tests/*/ | sed -e 's@/$$@@' -e 's@^.*/@@')
 
 VPATH := $(dir $(shell find -iname '*.c' -o -iname '*.h' -o -iname '*.cpp'))
 
-TARGET_TESTS_C := $(basename $(shell find tests -iname 'test.c'))
-TARGET_TESTS_CXX := $(basename $(shell find tests -iname 'test.cpp'))
+TARGET_TESTS_C := $(addsuffix $(EXECUTABLE_SUFFIX) , $(basename $(shell find tests -iname 'test.c')))
+TARGET_TESTS_CXX := $(addsuffix $(EXECUTABLE_SUFFIX) , $(basename $(shell find tests -iname 'test.cpp')))
 TARGET_TESTS := $(TARGET_TESTS_C) $(TARGET_TESTS_CXX)
-OBJS_TESTS_C := $(addsuffix .c.o , $(TARGET_TESTS_C))
-OBJS_TESTS_CXX := $(addsuffix .cpp.o , $(TARGET_TESTS_CXX))
+OBJS_TESTS_C := $(addsuffix .c.o , $(basename $(TARGET_TESTS_C)))
+OBJS_TESTS_CXX := $(addsuffix .cpp.o , $(basename $(TARGET_TESTS_CXX)))
 OBJS_TESTS := $(OBJS_TESTS_C) $(OBJS_TESTS_CXX)
 
-TARGET_CHECKERS_C := $(basename $(shell find checkers -iname '*.c'))
-TARGET_CHECKERS_CXX := $(basename $(shell find checkers -iname '*.cpp'))
+TARGET_CHECKERS_C := $(addsuffix $(EXECUTABLE_SUFFIX) , $(basename $(shell find checkers -iname '*.c')))
+TARGET_CHECKERS_CXX := $(addsuffix $(EXECUTABLE_SUFFIX) , $(basename $(shell find checkers -iname '*.cpp')))
 TARGET_CHECKERS := $(TARGET_CHECKERS_C) $(TARGET_CHECKERS_CXX)
-OBJS_CHECKERS_C := $(addsuffix .c.o , $(TARGET_CHECKERS_C))
-OBJS_CHECKERS_CXX := $(addsuffix .cpp.o , $(TARGET_CHECKERS_CXX))
+OBJS_CHECKERS_C := $(addsuffix .c.o , $(basename $(TARGET_CHECKERS_C)))
+OBJS_CHECKERS_CXX := $(addsuffix .cpp.o , $(basename $(TARGET_CHECKERS_CXX)))
 OBJS_CHECKERS := $(OBJS_CHECKERS_C) $(OBJS_CHECKERS_CXX)
 
 all: $(TARGET_RUNSBOX) $(TARGET_LIBSBOX) $(TARGET_LIBCHECKER) $(TARGET_CHECKERS) $(TARGET_TESTS)
@@ -52,7 +57,7 @@ checkers: $(TARGET_CHECKERS)
 
 $(LIBSBOX_SHARED): $(OBJS_LIBSBOX)
 	@ echo "   CC   $@"
-	@ $(CC) $(CFLAGS) -shared -o $@ $<
+	@ $(CC) $(CFLAGS) -shared -o $@ $< $(SBOX_LDFLAGS)
 
 $(LIBSBOX_STATIC): $(OBJS_LIBSBOX)
 	@ echo "   AR   $@"
@@ -67,8 +72,8 @@ $(LIBCHECKER_STATIC): $(OBJS_LIBCHECKER)
 	@ $(AR) rcs $@ $<
 
 $(TARGET_RUNSBOX): $(LIBSBOX_SHARED) $(OBJS_RUNSBOX)
-	@ echo "  CCLD  $@"
-	@ $(CC) $(CFLAGS) -L. -lsbox $(LDFLAGS) $(OBJS_RUNSBOX) -o $(TARGET_RUNSBOX)
+	@ echo "   LD   $@"
+	@ $(CC) $(CFLAGS) -L. $(RUNSBOX_LDFLAGS) $(LDFLAGS) $(OBJS_RUNSBOX) -o $(TARGET_RUNSBOX)
 
 %.c.o: %.c
 	@ echo "   CC   $@"
@@ -78,21 +83,21 @@ $(TARGET_RUNSBOX): $(LIBSBOX_SHARED) $(OBJS_RUNSBOX)
 	@ echo "   CXX  $@"
 	@ $(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(TARGET_TESTS_C): % : %.c.o
-	@ echo "  CCLD  $@"
-	@ $(CC) $(CFLAGS) $(LDFLAGS) $@.c.o -o $@
+$(TARGET_TESTS_C): %$(EXECUTABLE_SUFFIX) : %.c.o
+	@ echo "   LD   $@"
+	@ $(CC) $(CFLAGS) $(LDFLAGS) $(basename $@).c.o -o $@
 
-$(TARGET_TESTS_CXX): % : %.cpp.o
-	@ echo "  CXXLD $@"
-	@ $(CXX) $(CXXFLAGS) $(LDFLAGS) $@.cpp.o -o $@
+$(TARGET_TESTS_CXX): %$(EXECUTABLE_SUFFIX) : %.cpp.o
+	@ echo "   LD   $@"
+	@ $(CXX) $(CXXFLAGS) $(LDFLAGS) $(basename $@).cpp.o -o $@
 
-$(TARGET_CHECKERS_C): % : %.c.o $(LIBCHECKER_SHARED) 
-	@ echo "  CCLD  $@"
-	@ $(CC) $(CFLAGS) -L. -lchecker $(LDFLAGS) $@.c.o -o $@
+$(TARGET_CHECKERS_C): %$(EXECUTABLE_SUFFIX) : %.c.o $(LIBCHECKER_SHARED) 
+	@ echo "   LD   $@"
+	@ $(CC) $(CFLAGS) -L. $(CHECKER_LDFLAGS) $(LDFLAGS) $(basename $@).c.o -o $@
 
-$(TARGET_CHECKERS_CXX): % : %.cpp.o $(LIBCHECKER_SHARED) 
-	@ echo "  CXXLD $@"
-	@ $(CXX) $(CXXFLAGS) -L. -lchecker $(LDFLAGS) $@.cpp.o -o $@
+$(TARGET_CHECKERS_CXX): %$(EXECUTABLE_SUFFIX) : %.cpp.o $(LIBCHECKER_SHARED) 
+	@ echo "   LD   $@"
+	@ $(CXX) $(CXXFLAGS) -L. $(CHECKER_LDFLAGS) $(LDFLAGS) $(basename $@).cpp.o -o $@
 
 install: 
 	@ for bin in $(INSTALL_BIN); do echo "  BIN   $$bin" && install -m755 -D $$bin $(DESTDIR)$(BINDIR)/$$bin; done
