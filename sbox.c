@@ -88,13 +88,8 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
         set_security();
 
         /* Execute program */
-        char **args = malloc(2 * sizeof(char *));
-        args[0] = exe;
-        args[1] = NULL;
-
-        char **env = malloc(2 * sizeof(char *));
-        env[0] = "LD_PRELOAD=libc.so.6 libm.so.6"; 
-        env[1] = NULL;
+        char *args[] = {exe, NULL};
+        char *env[] = {"LD_PRELOAD=libc.so.6 libm.so.6", NULL};
         execvpe(exe, args, env);
 
         /* Something is seriously wrong */
