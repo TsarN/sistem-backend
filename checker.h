@@ -41,17 +41,27 @@
 
 #define checker_main() main(int argc, char *argv[])
 
-const int CR_OK = 0;   /* OK */
-const int CR_PE = 1;   /* Presentation Error */
-const int CR_WA = 2;   /* Wrong Answer */
-const int CR_IT = 3;   /* Invalid Test */
-const int CR_IE = 127; /* Internal Error*/
+/* OK */
+#define CR_OK 0
 
-const int ERR_UNEXPECTED_EOF = 1;
-const int ERR_OUT_OF_BOUNDS = 2;
-const int ERR_INVALID_FORMAT = 3;
-const int ERR_EOF_EXPECTED = 4;
-const int ERR_EOLN_EXPECTED = 5;
+/* Presentation Error */
+#define CR_PE 1
+
+/* Wrong Answer */
+#define CR_WA 2
+
+/* Invalid Test */
+#define CR_IT 3
+
+/* Internal Error*/
+#define CR_IE 127
+
+
+#define ERR_UNEXPECTED_EOF 1
+#define ERR_OUT_OF_BOUNDS 2
+#define ERR_INVALID_FORMAT 3
+#define ERR_EOF_EXPECTED 4
+#define ERR_EOLN_EXPECTED 5
 
 const char *ERR_NAMES[] = {
     "OK",
@@ -62,10 +72,10 @@ const char *ERR_NAMES[] = {
     "ERR_EOLN_EXPECTED"
 };
 
-const char LF = (char)10;
-const char CR = (char)13;
-const char TAB = (char)9;
-const char SPACE = (char)' ';
+#define LF (char)10
+#define CR (char)13
+#define TAB (char)9
+#define SPACE (char)' '
 
 /* str_stream */
 

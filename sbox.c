@@ -128,7 +128,7 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
         }
         if (timeoutpid == 0)
         {
-            usleep(time_limit  *1000  *4);
+            usleep(time_limit * 1000 * 4);
             exit(0);
         }
         int exitedpid = wait(&pstatus);
@@ -153,7 +153,7 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
         while ((z = read(output_pipe[0], buf, MAX_BUF)) != 0)
         {
             wsize += z;
-            char *tmp  = realloc(result.pstdout, wsize);
+            char *tmp = realloc(result.pstdout, wsize);
             if (tmp)
             {
                 result.pstdout = tmp;

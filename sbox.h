@@ -53,20 +53,24 @@
 
 #define MAX_BUF 1024
 
-const int ER_OK = 0;
-const int ER_TL = 1;
-const int ER_RE = 2;
-const int ER_ML = 4;
-const int ER_IE = 8;
-const int ER_SV = 16;
+#define ER_OK 0
+#define ER_TL 1
+#define ER_RE 2
+#define ER_ML 4
+#define ER_IE 8
+#define ER_SV 16
 
-const int PF_ML = 0x4280;
-const int PF_TL = 0x4282;
-const int PF_SV = 0x4281;
+#ifdef __linux__
 
-const int EC_ML = 0x10000;
-const int EC_TL = 0x40000;
-const int EC_SV = 0x20000;
+#define PF_ML 0x4280
+#define PF_TL 0x4282
+#define PF_SV 0x4281
+
+#define EC_ML 0x10000
+#define EC_TL 0x40000
+#define EC_SV 0x20000
+
+#endif
 
 struct exec_result_t
 {
@@ -77,6 +81,6 @@ struct exec_result_t
 
 typedef struct exec_result_t exec_result;
 
-extern exec_result run_limited_process(char *exe, char *input, int timeLimit, int memoryLimit);
+exec_result run_limited_process(char *exe, char *input, int timeLimit, int memoryLimit);
 
 #endif
