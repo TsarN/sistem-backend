@@ -56,6 +56,18 @@
 /* Internal Error*/
 #define CR_IE 127
 
+/* Long long printf format */
+#ifdef __MINGW32__
+    #define LLD_FORMAT   "%I64d"
+    #define LLU_FORMAT   "%I64u"
+    #define LF_FORMAT    "%lf"
+    typedef double LDOUBLE_CAST; 
+#else
+    #define LLD_FORMAT   "%lld"
+    #define LLU_FORMAT   "%llu"
+    #define LF_FORMAT    "%Lf"
+    typedef long double LDOUBLE_CAST; 
+#endif
 
 #define ERR_UNEXPECTED_EOF 1
 #define ERR_OUT_OF_BOUNDS 2
