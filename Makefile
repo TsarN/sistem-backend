@@ -3,8 +3,8 @@ CHECKER_LDFLAGS := $(shell if uname | grep 'NT' > /dev/null; then echo '-llibche
 RUNSBOX_LDFLAGS := $(shell if uname | grep 'NT' > /dev/null; then echo '-llibsbox'; else echo '-lsbox'; fi)
 SHARED_LIB_SUFFIX := $(shell if uname | grep -i 'NT' > /dev/null; then echo '.dll'; else echo '.so'; fi)
 EXECUTABLE_SUFFIX := $(shell uname | grep -i 'NT' > /dev/null && echo '.exe')
-CFLAGS := -std=c99 -g -Wall -I.
-CXXFLAGS := -g -Wall -I.
+CFLAGS := -std=c99 -g -Wall -I. -fPIC
+CXXFLAGS := -g -Wall -I. -fPIC
 LDFLAGS := -lm
 PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
