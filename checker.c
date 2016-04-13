@@ -177,7 +177,7 @@ long long read_long_long(str_stream *stream)
         return 0;
     }
     long long res;
-    if (!sscanf(str_int, "%lld", &res))
+    if (!sscanf(str_int, LLD_FORMAT, &res))
     {
         str_stream_error(stream, ERR_INVALID_FORMAT);
         free(str_int);
@@ -195,7 +195,7 @@ unsigned long long read_unsigned_long_long(str_stream *stream)
         return 0;
     }
     long long res;
-    if (!sscanf(str_int, "%llu", &res))
+    if (!sscanf(str_int, LLU_FORMAT, &res))
     {
         str_stream_error(stream, ERR_INVALID_FORMAT);
         free(str_int);
@@ -269,15 +269,15 @@ long double read_long_double(str_stream *stream)
     {
         return 0;
     }
-    long double res;
-    if (!sscanf(str_float, "%Lf", &res))
+    LDOUBLE_CAST res;
+    if (!sscanf(str_float, LF_FORMAT, &res))
     {
         str_stream_error(stream, ERR_INVALID_FORMAT);
         free(str_float);
         return 0;
     }
     free(str_float);
-    return res;
+    return (long double)res;
 }
 
 double read_double(str_stream *stream)
