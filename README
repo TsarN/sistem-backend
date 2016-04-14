@@ -40,6 +40,5 @@
  | MinGW                  |            |
  +------------------------+------------+
 
- * - On Gentoo system linking /usr/lib/gcc/TARGET_TRIPLET/GCC_VERSION/
-     libraries libstdc++.so.6, libgcc_s.so.1 to /usr/lib
-     was required
+ * - On Gentoo GNU/Linux linking /usr/lib/gcc/TARGET_TRIPLET/GCC_VERSION/
+     libraries libstdc++.so.6, libgcc_s.so.1 to /usr/lib was required

@@ -1,10 +1,10 @@
 SBOX_LDFLAGS := $(shell uname | grep 'NT' > /dev/null && echo '-lpsapi')
 CHECKER_LDFLAGS := $(shell if uname | grep 'NT' > /dev/null; then echo '-llibchecker'; else echo '-lchecker'; fi)
 RUNSBOX_LDFLAGS := $(shell if uname | grep 'NT' > /dev/null; then echo '-llibsbox'; else echo '-lsbox'; fi)
-SHARED_LIB_SUFFIX := $(shell if uname | grep -i 'NT' > /dev/null; then echo '.dll'; else echo '.so'; fi)
-EXECUTABLE_SUFFIX := $(shell uname | grep -i 'NT' > /dev/null && echo '.exe')
-CFLAGS := -std=c99 -g -Wall -Werror -I. -fPIC
-CXXFLAGS := -g -Wall -Werror -I. -fPIC
+SHARED_LIB_SUFFIX := $(shell if uname | grep 'NT' > /dev/null; then echo '.dll'; else echo '.so'; fi)
+EXECUTABLE_SUFFIX := $(shell uname | grep 'NT' > /dev/null && echo '.exe')
+CFLAGS := -std=c99 -g -Wall -Werror -I. $(shell uname | grep 'NT' > /dev/null || echo '-fPIC')
+CXXFLAGS := -g -Wall -Werror -I. $(shell uname | grep 'NT' > /dev/null || echo '-fPIC')
 LDFLAGS := -lm
 PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
