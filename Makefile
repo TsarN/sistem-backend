@@ -1,10 +1,11 @@
-SBOX_LDFLAGS := $(shell uname | grep 'NT' > /dev/null && echo '-lpsapi')
-CHECKER_LDFLAGS := $(shell if uname | grep 'NT' > /dev/null; then echo '-llibchecker'; else echo '-lchecker'; fi)
-RUNSBOX_LDFLAGS := $(shell if uname | grep 'NT' > /dev/null; then echo '-llibsbox'; else echo '-lsbox'; fi)
-SHARED_LIB_SUFFIX := $(shell if uname | grep 'NT' > /dev/null; then echo '.dll'; else echo '.so'; fi)
-EXECUTABLE_SUFFIX := $(shell uname | grep 'NT' > /dev/null && echo '.exe')
-CFLAGS := -std=c99 -g -Wall -Werror -I. $(shell uname | grep 'NT' > /dev/null || echo '-fPIC')
-CXXFLAGS := -g -Wall -Werror -I. $(shell uname | grep 'NT' > /dev/null || echo '-fPIC')
+IS_WIN32 := $(shell uname | grep 'NT' > /dev/null && echo 1)
+SBOX_LDFLAGS := $(if $(IS_WIN32),-lpsapi)
+CHECKER_LDFLAGS := $(if $(IS_WIN32),-llibchecker,-lchecker)
+RUNSBOX_LDFLAGS := $(if $(IS_WIN32),-llibsbox,-lsbox)
+SHARED_LIB_SUFFIX := $(if $(IS_WIN32),.dll,.so)
+EXECUTABLE_SUFFIX := $(if $(IS_WIN32),.exe)
+CFLAGS := -std=c99 -g -Wall -Werror -I. $(if $(IS_WIN32),,-fPIC)
+CXXFLAGS := -g -Wall -Werror -I. $(if $(IS_WIN32),,-fPIC)
 LDFLAGS := -lm
 PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
