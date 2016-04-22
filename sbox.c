@@ -123,6 +123,7 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
         {
             kill(SIGKILL, pid);
             fprintf(stderr, "timeout fork() failed\n");
+            close(output_pipe[0]);
             result.flags = ER_IE;
             return result;
         }
@@ -137,6 +138,7 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
             {
                 result.flags |= ER_TL;
                 result.flags |= ER_RE;
+                close(output_pipe[0]);
                 kill(SIGKILL, pid);
                 return result;
             }
@@ -162,11 +164,13 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
             {
                 /* realloc() failed */
                 fprintf(stderr, "realloc() failed\n");
+                close(output_pipe[0]);
                 result.flags = ER_IE;
                 return result;
             }
             strncat(result.pstdout, buf, z);
         } 
+        close(output_pipe[0]);
         if (pstatus & EC_ML) result.flags |= ER_ML;
         if (pstatus & EC_SV) result.flags |= ER_SV;
         if (pstatus & EC_TL) result.flags |= ER_TL;

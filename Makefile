@@ -4,8 +4,8 @@ CHECKER_LDFLAGS := $(if $(IS_WIN32),-llibchecker,-lchecker)
 RUNSBOX_LDFLAGS := $(if $(IS_WIN32),-llibsbox,-lsbox)
 SHARED_LIB_SUFFIX := $(if $(IS_WIN32),.dll,.so)
 EXECUTABLE_SUFFIX := $(if $(IS_WIN32),.exe)
-CFLAGS := -std=c99 -g -Wall -Werror -I. $(if $(IS_WIN32),,-fPIC)
-CXXFLAGS := -g -Wall -Werror -I. $(if $(IS_WIN32),,-fPIC)
+CFLAGS := -std=c99 -g -Wall -Werror -I. $(if $(IS_WIN32), ,-fPIC)
+CXXFLAGS := -g -Wall -Werror -I. $(if $(IS_WIN32), ,-fPIC)
 LDFLAGS := -lm
 PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
