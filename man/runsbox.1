@@ -1,0 +1,28 @@
+.TH runsbox 1 "APRIL 2016" "SISTEM Backend" "User manuals"
+.SH NAME
+runsbox \- execute process in sandbox
+.SH SYNOPSIS
+.B runsbox
+.I program time memory input
+.B [
+.I output
+.B ]
+.SH DESCRIPTION
+.B runsbox
+executes process in sandbox provided by Linux patch (https://github.com/CSchool/linux-sbox).
+Executed program can not open files outside of current directory, do potentially dangerous
+system calls, execute longer than
+.I time
+ms and use more than
+.I memory
+KiB of memory. It prints program's output to stdout or 
+.I output
+.SH EXIT STATUS
+Exit status is a bitmask for errors that happened during execution.
+ 1  - Time limit exceeded
+ 2  - Runtime error
+ 4  - Memory limit exceeded
+ 8  - Internal error
+ 16 - Security violation
+.SH AUTHOR
+Tsarev Nikita <nikts53@gmail.com>

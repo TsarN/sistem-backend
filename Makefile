@@ -11,6 +11,7 @@ PREFIX := /usr
 LIBDIR := $(PREFIX)/lib
 BINDIR := $(PREFIX)/bin
 INCLUDEDIR := $(PREFIX)/include
+MANDIR := $(PREFIX)/share/man
 CC := gcc
 CXX := g++
 
@@ -32,6 +33,7 @@ TARGET_LIBCHECKER_ALL := $(LIBCHECKER_SHARED) $(LIBCHECKER_STATIC)
 INSTALL_HEADERS := sbox.h checker.h
 INSTALL_BIN := $(TARGET_RUNSBOX)
 INSTALL_LIB := $(TARGET_LIBSBOX_ALL) $(TARGET_LIBCHECKER_ALL)
+INSTALL_MAN1 := runsbox.1
 
 TESTS := $(shell ls -d tests/*/ | sed -e 's@/$$@@' -e 's@^.*/@@')
 
@@ -103,10 +105,11 @@ $(TARGET_CHECKERS_CXX): %$(EXECUTABLE_SUFFIX) : %.cpp.o $(LIBCHECKER_SHARED)
 	@ $(CXX) $(CXXFLAGS) -L. $(CHECKER_LDFLAGS) $(LDFLAGS) $(basename $@).cpp.o -o $@
 
 install: 
-	@ for bin in $(INSTALL_BIN); do echo "  BIN   $$bin" && install -m755 -D $$bin $(DESTDIR)$(BINDIR)/$$bin; done
-	@ for lib in $(INSTALL_LIB); do echo "  LIB   $$lib" && install -m755 -D $$lib $(DESTDIR)$(LIBDIR)/$$lib; done
-	@ for header in $(INSTALL_HEADERS); do echo "  HDR   $$header" && install -m644 -D $$header $(DESTDIR)$(INCLUDEDIR)/$$header; done
-	@ for checker in $(TARGET_CHECKERS); do echo "  BIN   $$checker" && install -m755 -D $$checker $(DESTDIR)$(LIBDIR)/sistem/$$checker; done
+	-@ for bin in $(INSTALL_BIN); do test -e $$bin && echo "  BIN   $$bin" && install -m755 -D $$bin $(DESTDIR)$(BINDIR)/$$bin; done
+	-@ for lib in $(INSTALL_LIB); do test -e $$lib && echo "  LIB   $$lib" && install -m755 -D $$lib $(DESTDIR)$(LIBDIR)/$$lib; done
+	-@ for header in $(INSTALL_HEADERS); do test -e $$header && echo "  HDR   $$header" && install -m644 -D $$header $(DESTDIR)$(INCLUDEDIR)/$$header; done
+	-@ for checker in $(TARGET_CHECKERS); do test -e $$checker && echo "  BIN   $$checker" && install -m755 -D $$checker $(DESTDIR)$(LIBDIR)/sistem/$$checker; done
+	-@ for man in $(INSTALL_MAN1); do test -e man/$$man && echo "  MAN   $$man" && install -m755 -D man/$$man $(DESTDIR)$(MANDIR)/man1/$$man; done
 
 uninstall:
 	@ for bin in $(INSTALL_BIN); do echo " RM BIN $$bin" && rm -f $(DESTDIR)$(BINDIR)/$$bin; done
