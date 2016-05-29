@@ -3,9 +3,9 @@
 runsbox \- execute process in sandbox
 .SH SYNOPSIS
 .B runsbox
-.I program time memory input
+.I time memory input output program 
 .B [
-.I output
+.I args
 .B ]
 .SH DESCRIPTION
 .B runsbox
@@ -15,7 +15,7 @@ system calls, execute longer than
 .I time
 ms and use more than
 .I memory
-KiB of memory. It prints program's output to stdout or 
+KiB of memory. It prints program's output to
 .I output
 .SH EXIT STATUS
 Exit status is a bitmask for errors that happened during execution.

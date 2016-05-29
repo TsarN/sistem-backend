@@ -81,6 +81,6 @@ struct exec_result_t
 
 typedef struct exec_result_t exec_result;
 
-exec_result run_limited_process(char *exe, char *input, int timeLimit, int memoryLimit);
+exec_result run_limited_process(char *exe, char *input, int timeLimit, int memoryLimit, char **args);
 
 #endif

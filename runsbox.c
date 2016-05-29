@@ -27,20 +27,26 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc <= 4)
+    if (argc <= 5)
     {
         /* Print usage information */
-        fprintf(stderr, "%s%s%s", "Usage: ", argv[0], " <program> <time limit, ms> <memory limit, KB> <input file> [output file, default=stdout]\n");
+        fprintf(stderr, "%s%s%s", "Usage: ", argv[0], " <time limit, ms> <memory limit, KB> <input file> <output file> <program> [args]\n");
         return ER_IE;
     }
 
-    char *program = argv[1];
-    int time_limit = atoi(argv[2]);
-    int memory_limit = atoi(argv[3]);
-    char *file_in_name = argv[4];
-    char *file_out_name = NULL;
-    if (argc >= 6)
-        file_out_name = argv[5];
+    int time_limit = atoi(argv[1]);
+    int memory_limit = atoi(argv[2]);
+    char *file_in_name = argv[3];
+    char *file_out_name = argv[4];
+    char *program = argv[5];
+    int n_args = argc - 6;
+    char **args = malloc(sizeof(char*) * (n_args + 2));
+    args[0] = program;
+    args[n_args + 1] = NULL;
+    for (int i = 1; i <= n_args; ++i)
+    {
+        args[i] = argv[5 + i];
+    }
 
     FILE *file_in = fopen(file_in_name, "rb");
     if (!file_in)
@@ -66,7 +72,7 @@ int main(int argc, char *argv[])
     input[file_in_length] = '\0';
 
     /* Run process */
-    exec_result result = run_limited_process(program, input, time_limit, memory_limit);
+    exec_result result = run_limited_process(program, input, time_limit, memory_limit, args);
 
     free(input);
 

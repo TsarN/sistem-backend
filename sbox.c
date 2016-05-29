@@ -56,7 +56,7 @@ void set_security(void)
 }
 
 
-exec_result run_limited_process(char *exe, char *input, int time_limit, int memory_limit)
+exec_result run_limited_process(char *exe, char *input, int time_limit, int memory_limit, char **args)
 {
     exec_result result;
     result.flags = ER_OK;
@@ -88,7 +88,6 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
         set_security();
 
         /* Execute program */
-        char *args[] = {exe, NULL};
         char *env[] = {"LD_PRELOAD=libc.so.6 libm.so.6", NULL};
         execvpe(exe, args, env);
 
