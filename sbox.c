@@ -112,7 +112,7 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
         /* Send stdin to program */
         close(input_pipe[0]);
         close(output_pipe[1]);
-        write(input_pipe[1], input, sizeof(input));
+        write(input_pipe[1], input, strlen(input));
         close(input_pipe[1]); 
 
         /* User time limit */
@@ -186,7 +186,7 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
 
 #else
 
-/* Windows version */
+/* Windows version (OLD) */
 
 long long FiletimeToLonglong(const FILETIME *ft)
 {
