@@ -78,7 +78,7 @@ $(LIBCHECKER_STATIC): $(OBJS_LIBCHECKER)
 
 $(TARGET_RUNSBOX): $(LIBSBOX_SHARED) $(OBJS_RUNSBOX)
 	@ echo "   LD   $@"
-	@ $(CC) $(CFLAGS) -L. $(RUNSBOX_LDFLAGS) $(LDFLAGS) $(OBJS_RUNSBOX) -o $(TARGET_RUNSBOX)
+	@ $(CC) $(CFLAGS) -L. $(OBJS_RUNSBOX) $(RUNSBOX_LDFLAGS) $(LDFLAGS) -o $(TARGET_RUNSBOX)
 
 %.c.o: %.c
 	@ echo "   CC   $@"
@@ -90,19 +90,19 @@ $(TARGET_RUNSBOX): $(LIBSBOX_SHARED) $(OBJS_RUNSBOX)
 
 $(TARGET_TESTS_C): %$(EXECUTABLE_SUFFIX) : %.c.o
 	@ echo "   LD   $@"
-	@ $(CC) $(CFLAGS) $(LDFLAGS) $(basename $@).c.o -o $@
+	@ $(CC) $(CFLAGS) $(basename $@).c.o $(LDFLAGS) -o $@
 
 $(TARGET_TESTS_CXX): %$(EXECUTABLE_SUFFIX) : %.cpp.o
 	@ echo "   LD   $@"
-	@ $(CXX) $(CXXFLAGS) $(LDFLAGS) $(basename $@).cpp.o -o $@
+	@ $(CXX) $(CXXFLAGS) $(basename $@).cpp.o $(LDFLAGS) -o $@
 
 $(TARGET_CHECKERS_C): %$(EXECUTABLE_SUFFIX) : %.c.o $(LIBCHECKER_SHARED) 
 	@ echo "   LD   $@"
-	@ $(CC) $(CFLAGS) -L. $(CHECKER_LDFLAGS) $(LDFLAGS) $(basename $@).c.o -o $@
+	@ $(CC) $(CFLAGS) -L. $(basename $@).c.o $(CHECKER_LDFLAGS) $(LDFLAGS) -o $@
 
 $(TARGET_CHECKERS_CXX): %$(EXECUTABLE_SUFFIX) : %.cpp.o $(LIBCHECKER_SHARED) 
 	@ echo "   LD   $@"
-	@ $(CXX) $(CXXFLAGS) -L. $(CHECKER_LDFLAGS) $(LDFLAGS) $(basename $@).cpp.o -o $@
+	@ $(CXX) $(CXXFLAGS) -L. $(basename $@).cpp.o $(CHECKER_LDFLAGS) $(LDFLAGS) -o $@
 
 install: 
 	-@ for bin in $(INSTALL_BIN); do test -e $$bin && echo "  BIN   $$bin" && install -m755 -D $$bin $(DESTDIR)$(BINDIR)/$$bin; done
