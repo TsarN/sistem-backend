@@ -1,4 +1,5 @@
 #include <checker.h>
+#include <stdio.h>
 
 int checker_main()
 {
@@ -14,7 +15,13 @@ Checks if two numbers given on input are sum of number given on output");
     expect_eof(&f_output);
 
     if (a + b == res)
+    {
+        fprintf(stderr, "ok\n");
         return CR_OK;
+    }
     else
+    {
+        fprintf(stderr, "wrong answer: %d found, %d expected\n", res, a + b);
         return CR_WA;
+    }
 }

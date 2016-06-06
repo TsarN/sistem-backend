@@ -1,4 +1,5 @@
 #include <checker.h>
+#include <stdio.h>
 
 int checker_main()
 {
@@ -13,7 +14,13 @@ Checks if exactly one long matches pattern");
     expect_eof(&f_pattern);
 
     if (output == pattern)
+    {
+        fprintf(stderr, "ok\n");
         return CR_OK;
+    }
     else
+    {
+        fprintf(stderr, "wrong answer: %ld found, %ld expected\n", output, pattern);
         return CR_WA;
+    }
 }

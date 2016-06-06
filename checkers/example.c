@@ -4,6 +4,7 @@
  */
 
 #include <checker.h> /* Required include */
+#include <stdio.h> /* Logging */
 
 int checker_main() /* Required definition */
 {
@@ -27,7 +28,13 @@ Checks if number given on input is a number given on output");
      */
 
     if (x == y) /* Compare two numbers */
+    {
+        fprintf(stderr, "ok\n"); /* Add some commentary */
         return CR_OK; /* This test passed. Return OK */
+    }
     else
+    {
+        fprintf(stderr, "wrong answer: %d found, %d expected\n", y, x); /* 'y' is user's output, 'x' is expected */
         return CR_WA; /* This test failed. Return Wrong Answer */
+    }
 }
