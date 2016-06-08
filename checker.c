@@ -126,6 +126,28 @@ void seek_newline(str_stream *stream)
     for (;is_eoln_stream(stream); ++stream->pos);
 }
 
+char *read_line(str_stream *stream)
+{
+    seek_visible(stream);
+    if (!stream->str[stream->pos])
+    {
+        str_stream_error(stream, ERR_UNEXPECTED_EOF);
+        return NULL;
+    }
+    char *begin = stream->str + stream->pos;
+    size_t len = 0;
+    for (;!is_eoln(stream->str[stream->pos]); ++stream->pos) ++len;
+    char *str = malloc(len + 1);
+    if (!str)
+    {
+        fprintf(stderr, "%s\n", "Failed to read from str_stream: couldn't allocate memory");
+        exit(CR_IE);
+    }
+    memcpy(str, begin, len);
+    str[len] = (char)0;
+    return str;
+}
+
 char *read_string(str_stream *stream)
 {
     seek_visible(stream);

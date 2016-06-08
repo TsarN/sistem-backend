@@ -133,6 +133,7 @@ long double read_long_double(str_stream *stream);
 
 /* Reading strings */
 char *read_string(str_stream *stream);
+char *read_line(str_stream *stream);
 
 /* Utility */
 bool is_eof(char c);
