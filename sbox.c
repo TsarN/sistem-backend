@@ -88,7 +88,7 @@ exec_result run_limited_process(char *exe, char *input, int time_limit, int memo
         set_security();
 
         /* Execute program */
-        char *env[] = {"LD_PRELOAD=libc.so.6 libm.so.6", NULL};
+        char *env[] = {"LD_PRELOAD=libc.so.6 libm.so.6", "HOME=/tmp", NULL};
         execvpe(exe, args, env);
 
         /* Something is seriously wrong */
