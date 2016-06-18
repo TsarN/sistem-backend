@@ -44,11 +44,11 @@
 /* OK */
 #define CR_OK 0
 
-/* Presentation Error */
-#define CR_PE 1
-
 /* Wrong Answer */
-#define CR_WA 2
+#define CR_WA 1
+
+/* Presentation Error */
+#define CR_PE 2
 
 /* Invalid Test */
 #define CR_IT 3
